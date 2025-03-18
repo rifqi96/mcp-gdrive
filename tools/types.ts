@@ -42,3 +42,10 @@ export interface GSheetsReadInput {
   sheetId?: number; // Optional specific sheet ID
 }
 
+export interface GSheetsBatchUpdateInput {
+  fileId: string;
+  updates: {
+    range: string;
+    value: string;
+  }[];
+}

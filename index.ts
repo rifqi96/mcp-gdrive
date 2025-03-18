@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import 'dotenv/config';
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -129,6 +130,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function startServer() {
   try {
     console.log("Starting server");
+    // Force authentication on startup
+    await getValidCredentials(true);
+
     const transport = new StdioServerTransport();
     await server.connect(transport);
 

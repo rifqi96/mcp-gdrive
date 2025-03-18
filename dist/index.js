@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import 'dotenv/config';
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListResourcesRequestSchema, ListToolsRequestSchema, ReadResourceRequestSchema, } from "@modelcontextprotocol/sdk/types.js";
@@ -99,6 +100,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function startServer() {
     try {
         console.log("Starting server");
+        // Force authentication on startup
+        await getValidCredentials(true);
         const transport = new StdioServerTransport();
         await server.connect(transport);
         // Set up periodic token refresh that never prompts for auth
