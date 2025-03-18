@@ -100,15 +100,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function startServer() {
     try {
         console.log("Starting server");
-        // Force authentication on startup
-        await getValidCredentials(true);
+        // Initialize authentication without forcing re-auth
+        await getValidCredentials();
+        // Set up background token refresh
+        setupTokenRefresh();
         const transport = new StdioServerTransport();
         await server.connect(transport);
-        // Set up periodic token refresh that never prompts for auth
-        setupTokenRefresh();
+        console.log("Server started");
     }
     catch (error) {
-        console.error("Error starting server:", error);
+        console.error("Failed to start server:", error);
         process.exit(1);
     }
 }
